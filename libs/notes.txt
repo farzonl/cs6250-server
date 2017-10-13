@@ -1,0 +1,11 @@
+TODO:
+upgrade netty to netty-4.1.16.
+upgrade netty script to:
+
+if [ ! -d netty-4.1.16.Final ]; then
+  if [ ! -f netty-4.1.16.Final.tar.bz2 ]; then
+    wget http://dl.bintray.com/netty/downloads/netty-4.1.16.Final.tar.bz2
+  fi
+  tar -xvf netty-4.1.16.Final.tar.bz2
+fi
+
