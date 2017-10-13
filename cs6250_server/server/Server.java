@@ -13,7 +13,7 @@ public class Server {
 		InetSocketAddress socketAddr = new InetSocketAddress(port);
 		while (true) {
 			server = new NettyServer(new SpecificResponder(IBenchProtocol.class,
-					new BenchProtocolImpI()), socketAddr);
+					new BenchProtocolImpl()), socketAddr);
 			
 			try {
 				server.getPort();
