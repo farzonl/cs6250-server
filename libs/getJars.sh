@@ -15,7 +15,7 @@ if [ ! -f avro-ipc-1.8.2.jar ]; then
 fi
 
 if [ ! -d opencv-3.3.0 ]; then
-	if [ ! -f opencv-3.3.0.zip]; then
+	if [ ! -f 3.3.0.zip ]; then
 		wget https://github.com/opencv/opencv/archive/3.3.0.zip
 	fi
 	unzip 3.3.0.zip
