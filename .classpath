@@ -14,7 +14,7 @@
 	<classpathentry kind="lib" path="libs/jackson-mapper-asl-1.9.13.jar"/>
 	<classpathentry kind="lib" path="libs/opencv-3.3.0/release/bin/opencv-330.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/Users/thang911/Desktop/cs6250-server/libs/opencv-3.3.0/release/lib"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="cs6250-server/libs/opencv-3.3.0/release/lib"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="libs/avro-ipc-1.8.2.jar"/>
