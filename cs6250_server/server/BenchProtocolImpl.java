@@ -47,22 +47,16 @@ public class BenchProtocolImpl implements IBenchProtocol {
 	@Override
 	public List<ByteBuffer> addFrames(List<ByteBuffer> frames)
 			throws AvroRemoteException {
-		int numRemaining = 0;
-		
-		for (ByteBuffer buf: frames) {
-			++numRemaining;
-			MatOfByte m = new MatOfByte(buf.array());
-			Mat frame = Imgcodecs.imdecode(m, 0);
-			frameProcessor.addFrame(frame);
-		}
-		
+
 		List<ByteBuffer> processedFrames = new ArrayList<ByteBuffer>();
-		while (numRemaining > 0) {
-			Mat newFrame = frameProcessor.getFrame();
-			MatOfByte m = new MatOfByte();
-			Imgcodecs.imencode(".png", newFrame, m);
-			processedFrames.add(ByteBuffer.wrap(m.toArray()));
-			--numRemaining;
+		for (ByteBuffer buf: frames) {
+			MatOfByte encodedMat = new MatOfByte(buf.array());
+			Mat frame = Imgcodecs.imdecode(encodedMat, 0);
+			frameProcessor.addFrame(frame);
+			
+			MatOfByte decodedMat = new MatOfByte();
+			Imgcodecs.imencode(".png", frame, decodedMat);
+			processedFrames.add(ByteBuffer.wrap(decodedMat.toArray()));
 		}
 		
 		return processedFrames;
