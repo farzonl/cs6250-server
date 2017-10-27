@@ -9,6 +9,7 @@ import org.apache.avro.AvroRemoteException;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
 
 public class BenchProtocolImpl implements IBenchProtocol {
 
@@ -24,7 +25,7 @@ public class BenchProtocolImpl implements IBenchProtocol {
 		frameProcessor = new FrameProcessor(new EffectTask[]{new LocalEffectTask(new IdentityEffect())});
 		StartFrameProcessor();
 	}
-	
+
 	@Override
 	public Void addGrayscaleEffect() throws AvroRemoteException {
 		frameProcessor.addEffect(new LocalEffectTask(new GrayscaleEffect()));
@@ -34,6 +35,36 @@ public class BenchProtocolImpl implements IBenchProtocol {
 	@Override
 	public Void addIdentityEffect() throws AvroRemoteException {
 		frameProcessor.addEffect(new LocalEffectTask(new IdentityEffect()));
+		return null;
+	}
+
+	@Override
+	public Void addCartoonEffect() throws AvroRemoteException {
+		frameProcessor.addEffect(new LocalEffectTask(new CartoonEffect()));
+		return null;
+	}
+	
+	@Override
+	public Void addFaceDetectionEffect() throws AvroRemoteException {
+		frameProcessor.addEffect(new LocalEffectTask(new FaceDetectionEffect()));
+		return null;
+	}
+	
+	@Override
+	public Void addMaskEffect() throws AvroRemoteException {
+		frameProcessor.addEffect(new LocalEffectTask(new MaskEffect()));
+		return null;
+	}
+	
+	@Override
+	public Void addMotionDetectionEffect() throws AvroRemoteException {
+		frameProcessor.addEffect(new LocalEffectTask(new MotionDetectionEffect()));
+		return null;
+	}
+	
+	@Override
+	public Void addCheckerBoardDetectionEffect() throws AvroRemoteException {
+		frameProcessor.addEffect(new LocalEffectTask(new CheckerBoardDetectionEffect()));
 		return null;
 	}
 
@@ -51,12 +82,16 @@ public class BenchProtocolImpl implements IBenchProtocol {
 		List<ByteBuffer> processedFrames = new ArrayList<ByteBuffer>();
 		for (ByteBuffer buf: frames) {
 			MatOfByte encodedMat = new MatOfByte(buf.array());
-			Mat frame = Imgcodecs.imdecode(encodedMat, 0);
+			Mat frame = Imgcodecs.imdecode(encodedMat, Imgcodecs.CV_LOAD_IMAGE_COLOR);
+			Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BGR2RGBA);
 			frameProcessor.addFrame(frame);
 			
 			MatOfByte decodedMat = new MatOfByte();
-			Imgcodecs.imencode(".png", frame, decodedMat);
-			processedFrames.add(ByteBuffer.wrap(decodedMat.toArray()));
+			Mat newFrame = frameProcessor.getFrame();
+			if (newFrame != null) {
+				Imgcodecs.imencode(".png", newFrame, decodedMat);
+				processedFrames.add(ByteBuffer.wrap(decodedMat.toArray()));
+			}
 		}
 		
 		return processedFrames;
