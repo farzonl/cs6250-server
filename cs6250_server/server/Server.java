@@ -1,4 +1,5 @@
 package server;
+//import SendFileServer.SendFile;
 
 import java.net.*;
 
@@ -31,7 +32,7 @@ public class Server {
 		server.start();
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		System.loadLibrary("opencv_java330");
 		System.out.println("Cloud Server");
 		
@@ -41,8 +42,7 @@ public class Server {
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
-		
-		myServer.StartServer();
+
 	}
 
 }
