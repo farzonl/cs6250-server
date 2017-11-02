@@ -97,4 +97,46 @@ public class BenchProtocolImpl implements IBenchProtocol {
 		return processedFrames;
 	}
 
+	@Override
+	public Void addSnappyCompression() throws AvroRemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Void addGzipCompression() throws AvroRemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Void addDeflateCompression() throws AvroRemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Void addBzip2Compression() throws AvroRemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Void addPack200Compression() throws AvroRemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Void addLz4Compression() throws AvroRemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Void addZstdCompression() throws AvroRemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
