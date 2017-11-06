@@ -10,18 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.avro.AvroRemoteException;
-import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
-import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
-import org.apache.commons.compress.compressors.deflate.DeflateCompressorInputStream;
-import org.apache.commons.compress.compressors.deflate.DeflateCompressorOutputStream;
-import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
-import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
-import org.apache.commons.compress.compressors.lz4.FramedLZ4CompressorInputStream;
-import org.apache.commons.compress.compressors.lz4.FramedLZ4CompressorOutputStream;
-import org.apache.commons.compress.compressors.pack200.Pack200CompressorInputStream;
-import org.apache.commons.compress.compressors.pack200.Pack200CompressorOutputStream;
-import org.apache.commons.compress.compressors.snappy.FramedSnappyCompressorInputStream;
-import org.apache.commons.compress.compressors.snappy.FramedSnappyCompressorOutputStream;
+import org.apache.commons.compress.compressors.CompressorException;
+import org.apache.commons.compress.compressors.CompressorStreamFactory;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -46,6 +36,7 @@ public class BenchProtocolImpl implements IBenchProtocol {
 	FrameProcessor frameProcessor;
 	private static final int DEFAULT_BUFFER_SIZE = 64 * 1024;
 	private ByteArrayOutputStream outputBuffer;
+	private CompressorStreamFactory csf;
 
 	void StartFrameProcessor() {
 		frameProcessor.start();
@@ -54,6 +45,7 @@ public class BenchProtocolImpl implements IBenchProtocol {
 	//TODO create a RemoteEffectTask or rename
 	public BenchProtocolImpl() {
 		System.out.println("Starting server side frame processor ");
+		csf = new CompressorStreamFactory();
 		frameProcessor = new FrameProcessor(new EffectTask[]{new LocalEffectTask(new IdentityEffect())});
 		StartFrameProcessor();
 	}
@@ -130,7 +122,7 @@ public class BenchProtocolImpl implements IBenchProtocol {
 	}
 
 	@Override
-	public List<ByteBuffer> addCompressedFrames(List<ByteBuffer> frames, Compress algo) throws AvroRemoteException {
+	public List<ByteBuffer> addCompressedFrames(List<ByteBuffer> frames, CharSequence algo) throws AvroRemoteException {
 		List<ByteBuffer> deompressedFrames = new ArrayList<>();
 		List<ByteBuffer> effectedFrames;
 		List<ByteBuffer> compressedFrames = new ArrayList<>();
@@ -156,40 +148,20 @@ public class BenchProtocolImpl implements IBenchProtocol {
 		return compressedFrames;
 	}
 
-	private ByteBuffer compress(ByteBuffer uncompressedData, Compress c) throws IOException {
+	private ByteBuffer compress(ByteBuffer uncompressedData, CharSequence c) throws IOException {
 		ByteArrayOutputStream baos = getOutputBuffer(uncompressedData.capacity());
 		OutputStream outputStream = null;
-		switch (c) {
-			case BZIP2:
-				outputStream = new BZip2CompressorOutputStream(baos);
-				break;
-			case LZ4:
-				outputStream = new FramedLZ4CompressorOutputStream(baos);
-				break;
-			case GZIP:
-				outputStream = new GzipCompressorOutputStream(baos);
-				break;
-			case SNAPPY:
-				outputStream = new FramedSnappyCompressorOutputStream(baos);
-				break;
-			case DELFATE:
-				outputStream = new DeflateCompressorOutputStream(baos);
-				break;
-			case PACK200:
-				outputStream = new Pack200CompressorOutputStream(baos);
-				break;
-			case ZSTD:
-				outputStream = new ZstdOutputStream(baos);
-			case UNKNOWN:
-			default:
-				System.err.println("CloudFrameProcessor, Unknown compressor: " + c.toString());
-				System.exit(-1);
-		}
-
 		try {
+			if (c.equals("zstd")) {
+                outputStream = new ZstdOutputStream(baos);
+            } else {
+                outputStream = csf.createCompressorOutputStream(c.toString(), baos);
+            }
 			outputStream.write(uncompressedData.array());
 		} catch (IOException ioe) {
 			System.err.println("CloudFrameProcessor, Error compressing " + ioe.toString());
+		} catch (CompressorException ce) {
+			System.err.println("CloudFrameProcessor, Unknown compressor" + ce.toString());
 		} finally {
 			outputStream.close();
 		}
@@ -197,39 +169,16 @@ public class BenchProtocolImpl implements IBenchProtocol {
 		return ByteBuffer.wrap(baos.toByteArray());
 	}
 
-	private ByteBuffer decompress(ByteBuffer compressedData, Compress c) throws IOException {
+	private ByteBuffer decompress(ByteBuffer compressedData, CharSequence c) throws IOException {
 		ByteArrayInputStream bais = new ByteArrayInputStream(compressedData.array());
 		InputStream inputStream = null;
-		switch (c) {
-			case BZIP2:
-				inputStream = new BZip2CompressorInputStream(bais);
-				break;
-			case LZ4:
-				inputStream = new FramedLZ4CompressorInputStream(bais);
-				break;
-			case GZIP:
-				inputStream = new GzipCompressorInputStream(bais);
-				break;
-			case SNAPPY:
-				inputStream = new FramedSnappyCompressorInputStream(bais);
-				break;
-			case DELFATE:
-				inputStream = new DeflateCompressorInputStream(bais);
-				break;
-			case PACK200:
-				inputStream = new Pack200CompressorInputStream(bais);
-				break;
-			case ZSTD:
-				inputStream = new ZstdInputStream(bais);
-			case UNKNOWN:
-			default:
-				System.err.println("CloudFrameProcessor, Unknown decompressor: " + c.toString());
-				System.exit(-1);
-		}
-
 		ByteBuffer toReturn;
-
 		try {
+            if (c.equals("zstd")) {
+                inputStream = new ZstdInputStream(bais);
+            } else {
+                inputStream = csf.createCompressorInputStream(c.toString(), bais);
+            }
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
 			byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
@@ -243,6 +192,9 @@ public class BenchProtocolImpl implements IBenchProtocol {
 		} catch (IOException ioe) {
 			toReturn = null;
 			System.err.println("CloudFrameProcessor, Error decompressing" + ioe.toString());
+		} catch (CompressorException ce) {
+			toReturn = null;
+			System.err.println("CloudFrameProcessor, Unknown decompressor" + ce.toString());
 		} finally {
 			inputStream.close();
 		}
