@@ -17,9 +17,6 @@ import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
-import com.github.luben.zstd.ZstdInputStream;
-import com.github.luben.zstd.ZstdOutputStream;
-
 import cs6250.benchmarkingsuite.imageprocessing.effects.CartoonEffect;
 import cs6250.benchmarkingsuite.imageprocessing.effects.CheckerBoardDetectionEffect;
 import cs6250.benchmarkingsuite.imageprocessing.effects.FaceDetectionEffect;
@@ -152,11 +149,7 @@ public class BenchProtocolImpl implements IBenchProtocol {
 		ByteArrayOutputStream baos = getOutputBuffer(uncompressedData.capacity());
 		OutputStream outputStream = null;
 		try {
-			if (c.equals("zstd")) {
-                outputStream = new ZstdOutputStream(baos);
-            } else {
-                outputStream = csf.createCompressorOutputStream(c.toString(), baos);
-            }
+			outputStream = csf.createCompressorOutputStream(c.toString(), baos);
 			outputStream.write(uncompressedData.array());
 		} catch (IOException ioe) {
 			System.err.println("CloudFrameProcessor, Error compressing " + ioe.toString());
@@ -174,11 +167,7 @@ public class BenchProtocolImpl implements IBenchProtocol {
 		InputStream inputStream = null;
 		ByteBuffer toReturn;
 		try {
-            if (c.equals("zstd")) {
-                inputStream = new ZstdInputStream(bais);
-            } else {
-                inputStream = csf.createCompressorInputStream(c.toString(), bais);
-            }
+            inputStream = csf.createCompressorInputStream(c.toString(), bais);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
 			byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
