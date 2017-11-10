@@ -12,11 +12,17 @@ import org.apache.avro.ipc.specific.SpecificResponder;
 public class Server {
 	//private static NettyServer server;
 	//private static DatagramServer server;
+<<<<<<< HEAD
 	//private static UDPNettyServer server;
 	//private static  UdpServer server;
 	private static UDPServerNetty server;
 	final static int port = 20001;
 	UDPResponder res;
+=======
+	private static UDPNettyServer server;
+	final static int port = 20001;
+	
+>>>>>>> 3ce16c8615590ea597c7ec0ec27fee18bf4c0ede
 	public void InitServer() throws Exception {
 		InetSocketAddress socketAddr = new InetSocketAddress(port);
 		while (true) {
@@ -24,6 +30,7 @@ public class Server {
 			//		new BenchProtocolImpl()), socketAddr);
 			//server = new DatagramServer(new SpecificResponder(IBenchProtocol.class,
 		    //		new BenchProtocolImpl()), socketAddr);
+<<<<<<< HEAD
 			//server = new UDPNettyServer();
 			server = new UDPServerNetty(res, socketAddr);
 			//server.socketAddress = socketAddr;
@@ -33,6 +40,14 @@ public class Server {
 			try {
 				//server.getPort();
 				server.getPort();
+=======
+			server = new UDPNettyServer();
+			server.socketAddress = socketAddr;
+			
+			try {
+				//server.getPort();
+				server.getPortNumber();
+>>>>>>> 3ce16c8615590ea597c7ec0ec27fee18bf4c0ede
 			} catch (NullPointerException e) {
 				e.printStackTrace();
 			}
@@ -46,6 +61,7 @@ public class Server {
 	public void StartServer() throws Exception {
 		//server.startServer(port);
 		//server.start();
+<<<<<<< HEAD
 		//server.afterPropertiesSet();
 		//server.createServerBootstrap();
 	//	server.createChannel();
@@ -56,6 +72,12 @@ public class Server {
 		byte [] message = msg.getBytes();
 		server.sendMessage(message, clientIp);*/
 		server.join();
+=======
+		server.createServerBootstrap();
+		server.createChannel();
+		System.out.println(server.toString());
+		//server.join();
+>>>>>>> 3ce16c8615590ea597c7ec0ec27fee18bf4c0ede
 	}
 	
 	public static void main(String[] args) throws Exception {
@@ -67,9 +89,18 @@ public class Server {
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
+<<<<<<< Updated upstream
 
+<<<<<<< HEAD
 		myServer.StartServer();
 		//myServer.run();
+=======
+=======
+		
+		myServer.StartServer();
+		//myServer.run();
+>>>>>>> Stashed changes
+>>>>>>> 3ce16c8615590ea597c7ec0ec27fee18bf4c0ede
 	}
 
 }

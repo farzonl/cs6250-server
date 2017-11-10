@@ -17,6 +17,7 @@ package server;
 
 import com.flipkart.phantom.runtime.impl.server.concurrent.NamedThreadFactory;
 import com.flipkart.phantom.runtime.impl.server.netty.AbstractNettyNetworkServer;
+<<<<<<< HEAD
 import com.flipkart.phantom.runtime.spi.server.NetworkServer.TRANSMISSION_PROTOCOL;
 import com.flipkart.phantom.runtime.spi.server.NetworkServer.TransmissionProtocol;
 
@@ -26,27 +27,52 @@ import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
+=======
+
+import org.jboss.netty.bootstrap.Bootstrap;
+import org.jboss.netty.bootstrap.ServerBootstrap;
+import org.jboss.netty.channel.Channel;
+>>>>>>> 3ce16c8615590ea597c7ec0ec27fee18bf4c0ede
 import org.jboss.netty.channel.socket.nio.NioDatagramChannelFactory;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.*;
 
 
+<<<<<<< HEAD
 public class UDPNettyServer {
 
     
 	private static final int portNumber = 20001;
+=======
+public class UDPNettyServer extends AbstractNettyNetworkServer {
+
+    /** The default counts (invalid one) for server and worker pool counts*/
+    private static final int INVALID_POOL_SIZE = -1;
+
+    /** The server and worker thread pool sizes*/
+    private int workerPoolSize = INVALID_POOL_SIZE;
+    private int executorQueueSize = Runtime.getRuntime().availableProcessors() * 12;
+
+    /** The server and worker ExecutorService instances*/
+  private ExecutorService workerExecutors;
+>>>>>>> 3ce16c8615590ea597c7ec0ec27fee18bf4c0ede
 private UDPResponder responder;
 
     /** Server Type */
     private String serverType = "UDP Netty Server";
+<<<<<<< HEAD
 ConnectionlessBootstrap b;
+=======
+
+>>>>>>> 3ce16c8615590ea597c7ec0ec27fee18bf4c0ede
 
     public TransmissionProtocol getTransmissionProtocol() {
         return TRANSMISSION_PROTOCOL.UDP;
     }
 InetSocketAddress socketAddress = new InetSocketAddress(portNumber);
 
+<<<<<<< HEAD
     
     
     public String toString(){
@@ -56,10 +82,42 @@ InetSocketAddress socketAddress = new InetSocketAddress(portNumber);
     protected void createServerBootstrap() throws RuntimeException {
     	
     		b = new ConnectionlessBootstrap(new NioDatagramChannelFactory());    		
+=======
+    public void afterPropertiesSet() throws Exception {
+        
+        if (this.getWorkerExecutors() == null) {  // no executors have been set for workers
+            if (this.getWorkerPoolSize() != UDPNettyServer.INVALID_POOL_SIZE) { // thread pool size has not been set.
+                this.setWorkerExecutors(new ThreadPoolExecutor(this.getWorkerPoolSize(),
+                        this.getWorkerPoolSize(),
+                        60,
+                        TimeUnit.SECONDS,
+                        new LinkedBlockingQueue<Runnable>(this.getExecutorQueueSize()),
+                        new NamedThreadFactory("UDPServer-Worker"),
+                        new ThreadPoolExecutor.CallerRunsPolicy()));
+            } else { // default behavior of creating and using a cached thread pool
+                this.setWorkerExecutors(Executors.newCachedThreadPool(new NamedThreadFactory("UDPServer-Worker")));
+            }
+        }
+        super.afterPropertiesSet();
+    }
+    
+    
+    public String toString(){
+        return "UDPNettyServer [socketAddress=" + socketAddress + ", portNumber=" + portNumber + "] " + this.getPipelineFactory();
+    }
+
+    protected Bootstrap createServerBootstrap() throws RuntimeException {
+    	if (this.getWorkerPoolSize() != UDPNettyServer.INVALID_POOL_SIZE) { // specify the worker count if it has been set, else use defaults (Netty uses 2 * no. of cores)
+    		return new ServerBootstrap(new NioDatagramChannelFactory(this.getWorkerExecutors(), this.getWorkerPoolSize()));    		
+    	} else {
+   		return new ServerBootstrap(new NioDatagramChannelFactory(this.getWorkerExecutors()));
+    	}
+>>>>>>> 3ce16c8615590ea597c7ec0ec27fee18bf4c0ede
     }
 
     
     protected Channel createChannel() throws RuntimeException {
+<<<<<<< HEAD
         /*if (this.getServerBootstrap() == null) {
             throw new RuntimeException("Error creating Channel. Bootstrap instance cannot be null. See TCPNettyServer#createServerBootstrap()");
         }*/
@@ -69,6 +127,14 @@ InetSocketAddress socketAddress = new InetSocketAddress(portNumber);
     protected void createchpipeline() {
     	b.setPipelineFactory((ChannelPipelineFactory) new NioDatagramChannelFactory());
     }
+=======
+        if (this.getServerBootstrap() == null) {
+            throw new RuntimeException("Error creating Channel. Bootstrap instance cannot be null. See TCPNettyServer#createServerBootstrap()");
+        }
+        return ((ServerBootstrap)this.serverBootstrap).bind(this.socketAddress);
+    }
+
+>>>>>>> 3ce16c8615590ea597c7ec0ec27fee18bf4c0ede
     public String getServerType() {
         return  this.serverType;
     }
@@ -80,8 +146,38 @@ InetSocketAddress socketAddress = new InetSocketAddress(portNumber);
     /**
      * Abstract method implementation. Returns server endpoint as string.
      */
+<<<<<<< HEAD
     public int getPortNumber() {
         return portNumber;
     }
 
 }
+=======
+    public String getServerEndpoint() {
+        return ""+this.portNumber;
+    }
+
+    /** Start Getter/Setter methods */
+    
+    public int getWorkerPoolSize() {
+        return this.workerPoolSize;
+    }
+    public void setWorkerPoolSize(int workerPoolSize) {
+        this.workerPoolSize = workerPoolSize;
+    }
+    
+    public ExecutorService getWorkerExecutors() {
+        return this.workerExecutors;
+    }
+    public void setWorkerExecutors(ExecutorService workerExecutors) {
+        this.workerExecutors = workerExecutors;
+    }
+    public int getExecutorQueueSize() {
+        return executorQueueSize;
+    }
+    public void setExecutorQueueSize(int executorQueueSize) {
+        this.executorQueueSize = executorQueueSize;
+    }
+    /** End Getter/Setter methods */
+}
+>>>>>>> 3ce16c8615590ea597c7ec0ec27fee18bf4c0ede
