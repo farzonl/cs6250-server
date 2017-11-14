@@ -19,5 +19,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="libs/avro-ipc-1.8.2.jar"/>
 	<classpathentry kind="lib" path="libs/slf4j-1.7.25/slf4j-api-1.7.25.jar"/>
+	<classpathentry kind="lib" path="libs/commons-compress-1.15.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
