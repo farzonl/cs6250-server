@@ -5,7 +5,7 @@
 	<classpathentry kind="src" path="cs6250/app/src/main/java"/>
 	<classpathentry kind="src" path="cs6250/app/src/test/java"/>
 	<classpathentry kind="src" path="cs6250/openCVLibrary330/src/main/java"/>
-	<classpathentry kind="src" path="cs6250_server"/>
+	<classpathentry excluding="server/DatagramServer.java" kind="src" path="cs6250_server"/>
 	<classpathentry kind="lib" path="cs6250/gradle/wrapper/gradle-wrapper.jar"/>
 	<classpathentry kind="lib" path="libs/avro-1.8.2.jar"/>
 	<classpathentry kind="lib" path="libs/netty-3.10.6.Final/jar/netty-3.10.6.Final.jar"/>
@@ -20,5 +20,6 @@
 	<classpathentry kind="lib" path="libs/avro-ipc-1.8.2.jar"/>
 	<classpathentry kind="lib" path="libs/slf4j-1.7.25/slf4j-api-1.7.25.jar"/>
 	<classpathentry kind="lib" path="libs/commons-compress-1.15.jar"/>
+
 	<classpathentry kind="output" path="bin"/>
 </classpath>
