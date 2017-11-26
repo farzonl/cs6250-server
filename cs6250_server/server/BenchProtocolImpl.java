@@ -17,16 +17,11 @@ import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
-import cs6250.benchmarkingsuite.imageprocessing.effects.CartoonEffect;
-import cs6250.benchmarkingsuite.imageprocessing.effects.CheckerBoardDetectionEffect;
-import cs6250.benchmarkingsuite.imageprocessing.effects.FaceDetectionEffect;
-import cs6250.benchmarkingsuite.imageprocessing.effects.GrayscaleEffect;
-import cs6250.benchmarkingsuite.imageprocessing.effects.IdentityEffect;
-import cs6250.benchmarkingsuite.imageprocessing.effects.MaskEffect;
-import cs6250.benchmarkingsuite.imageprocessing.effects.MotionDetectionEffect;
+import cs6250.benchmarkingsuite.imageprocessing.effects.*;
 import cs6250.benchmarkingsuite.imageprocessing.pipeline.EffectTask;
 import cs6250.benchmarkingsuite.imageprocessing.pipeline.FrameProcessor;
 import cs6250.benchmarkingsuite.imageprocessing.pipeline.LocalEffectTask;
+import cs6250.benchmarkingsuite.imageprocessing.server.IBenchProtocol;
 
 public class BenchProtocolImpl implements IBenchProtocol {
 
@@ -88,6 +83,78 @@ public class BenchProtocolImpl implements IBenchProtocol {
 		frameProcessor.addEffect(new LocalEffectTask(new CheckerBoardDetectionEffect()));
 		return null;
 	}
+	
+	@Override
+	public Void addMotionHistoryEffect() throws AvroRemoteException {
+		frameProcessor.addEffect(new LocalEffectTask(new MotionHistoryEffect()));
+		return null;
+	}
+	
+	@Override
+	public Void addNegativeEffect() throws AvroRemoteException {
+		frameProcessor.addEffect(new LocalEffectTask(new NegativeEffect()));
+		return null;
+	  }
+	  
+	  public Void addSepiaEffect() throws AvroRemoteException {
+		  frameProcessor.addEffect(new LocalEffectTask(new SepiaEffect()));
+			return null;
+	  }
+
+	  @Override
+	  public Void addVerticalEffect() throws AvroRemoteException {
+		  frameProcessor.addEffect(new LocalEffectTask(new VerticalFlipEffect()));
+			return null;  
+	  }
+	  
+	  @Override
+	  public Void addXrayEffect() throws AvroRemoteException {
+		  frameProcessor.addEffect(new LocalEffectTask(new VerticalFlipEffect()));
+		  return null;
+	  }
+
+	  @Override
+	  public Void addHorizontalFlipEffect() throws AvroRemoteException {
+		  frameProcessor.addEffect(new LocalEffectTask(new VerticalFlipEffect()));
+		  return null;
+	  }
+	  
+	  @Override
+	  public Void addHoughCircleEffect() throws AvroRemoteException {
+		  frameProcessor.addEffect(new LocalEffectTask(new HoughCircleEffect()));
+		  return null;
+	  }
+	  
+	  @Override
+	  public Void addHoughLineEffect() throws AvroRemoteException {
+		  frameProcessor.addEffect(new LocalEffectTask(new  HoughLineEffect()));
+		  return null;
+	  }
+	  
+	  @Override
+	  public Void addEdgeDetectionEffect() throws AvroRemoteException {
+		  frameProcessor.addEffect(new LocalEffectTask(new EdgeDetectionEffect()));
+		  return null;
+	  }
+	  
+	  @Override
+	  public Void  addGradientMagnitudeEffect() throws AvroRemoteException {
+		  frameProcessor.addEffect(new LocalEffectTask(new  GradientMagnitudeEffect()));
+		  return null;
+	  }
+	  
+	  @Override
+	  public Void  addBlurEffect() throws AvroRemoteException {
+		  frameProcessor.addEffect(new LocalEffectTask(new  BlurEffect()));
+		  return null;
+	  }
+	  
+	  @Override
+	  public Void  addColorSaturationEffect() throws AvroRemoteException {
+		  frameProcessor.addEffect(new LocalEffectTask(new  ColorSaturationEffect()));
+		  return null;
+	  }
+
 
 	@Override
 	public Void clearEffects() throws AvroRemoteException {
