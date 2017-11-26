@@ -1,5 +1,6 @@
 package server;
 
+import java.io.IOException;
 import java.net.*;
 
 import org.apache.avro.ipc.NettyServer;
@@ -37,14 +38,22 @@ public class Server {
 		System.loadLibrary("opencv_java330");
 		System.out.println("Cloud Server");
 		
-		Server myServer = new Server();
+		UDPServer server = new UDPServer();
 		try {
-			myServer.InitServer();
+			server.InitServer();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		server.StartServer();
+		
+		/*Server myServer = new Server();
+		try {
+			//myServer.InitServer();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
 		
-		myServer.StartServer();
+		myServer.StartServer();*/
 	}
 
 }
