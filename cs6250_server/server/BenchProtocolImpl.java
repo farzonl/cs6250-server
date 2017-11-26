@@ -73,18 +73,6 @@ public class BenchProtocolImpl implements IBenchProtocol {
 	}
 
 	@Override
-	public Void addMotionDetectionEffect() throws AvroRemoteException {
-		frameProcessor.addEffect(new LocalEffectTask(new MotionDetectionEffect()));
-		return null;
-	}
-
-	@Override
-	public Void addCheckerBoardDetectionEffect() throws AvroRemoteException {
-		frameProcessor.addEffect(new LocalEffectTask(new CheckerBoardDetectionEffect()));
-		return null;
-	}
-	
-	@Override
 	public Void addMotionHistoryEffect() throws AvroRemoteException {
 		frameProcessor.addEffect(new LocalEffectTask(new MotionHistoryEffect()));
 		return null;
@@ -155,7 +143,55 @@ public class BenchProtocolImpl implements IBenchProtocol {
 		  return null;
 	  }
 
+	@Override
+	public Void addCatDetectionEffect() throws AvroRemoteException {
+		frameProcessor.addEffect(new LocalEffectTask(new CatDetectionEffect()));
+		return null;
+	}
+	
+	@Override
+	public Void addCarDetectionEffect() throws AvroRemoteException {
+		frameProcessor.addEffect(new LocalEffectTask(new CarDetectionEffect()));
+		return null;
+	}
+	
+	@Override
+	public Void addMouthDetectionEffect() throws AvroRemoteException {
+		frameProcessor.addEffect(new LocalEffectTask(new MouthDetectionEffect()));
+		return null;
+	}
+	
+	@Override
+	public Void addNoseDetectionEffect() throws AvroRemoteException {
+		frameProcessor.addEffect(new LocalEffectTask(new NoseDetectionEffect()));
+		return null;
+	}
+	
+	@Override
+	public Void addEyeDetectionEffect() throws AvroRemoteException {
+		frameProcessor.addEffect(new LocalEffectTask(new EyeDetectionEffect()));
+		return null;
+	}
 
+	@Override
+	public Void addFaceFeatureDetectionEffect() throws AvroRemoteException {
+		frameProcessor.addEffect(new LocalEffectTask(new FaceFeatureDetectionEffect()));
+		return null;
+	}
+	
+	@Override
+	public Void addFaceLandmarksDetectionEffect() throws AvroRemoteException {
+		frameProcessor.addEffect(new LocalEffectTask(new FaceLandMarksEffect()));
+		return null;
+	}
+	
+	@Override
+	public Void addFaceSwapEffect() throws AvroRemoteException {
+		frameProcessor.addEffect(new LocalEffectTask(new FaceSwapEffect()));
+		return null;
+	}
+
+	
 	@Override
 	public Void clearEffects() throws AvroRemoteException {
 		System.out.println("Clearling all effects");

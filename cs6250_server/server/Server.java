@@ -6,6 +6,7 @@ import org.apache.avro.ipc.NettyServer;
 import org.apache.avro.ipc.specific.SpecificResponder;
 
 import cs6250.benchmarkingsuite.imageprocessing.server.IBenchProtocol;
+import cs6250.benchmarkingsuite.imageprocessing.static_files.*;
 
 public class Server {
 	private static NettyServer server;
@@ -37,13 +38,14 @@ public class Server {
 		System.loadLibrary("opencv_java330");
 		System.out.println("Cloud Server");
 		
+		Resources.initServerResources();
+		
 		Server myServer = new Server();
 		try {
 			myServer.InitServer();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
-		
 		myServer.StartServer();
 	}
 
