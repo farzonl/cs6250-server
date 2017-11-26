@@ -5,6 +5,8 @@ import java.net.*;
 import org.apache.avro.ipc.NettyServer;
 import org.apache.avro.ipc.specific.SpecificResponder;
 
+import cs6250.benchmarkingsuite.imageprocessing.server.IBenchProtocol;
+
 public class Server {
 	private static NettyServer server;
 	final static int port = 20001;
