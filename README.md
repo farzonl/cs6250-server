@@ -35,3 +35,20 @@ git submodule update
   *  Copy the contents of `OpenCV-android-sdk/sdk/native/libs/` from the downloaded ZIP...
   * Into `./cs6250/openCVLibrary330/src/main/jniLibs/`
   * Also contains the APK for the emulator, if needed
+
+## Iperf3:
+  ------
+  * This is the standard tool we use to measure the quality of a network
+  *  connection. To compile this go the cs6250 submodule folder. It will be under app/jni.
+  *  Copy the tar ball to another directory and decompress it. Then type the following commands:
+
+    * $ ./configure
+    * $ make
+
+    * go to the source folder. There should an "iperf3" executable. Run this in a
+    * terminal using:
+
+    * $ iperf -s
+
+    * This will start up the server side of the bandwidth measurement tool
+
