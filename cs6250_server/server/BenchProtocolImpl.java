@@ -28,7 +28,7 @@ import cs6250.benchmarkingsuite.imageprocessing.pipeline.EffectTask;
 import cs6250.benchmarkingsuite.imageprocessing.pipeline.FrameProcessor;
 import cs6250.benchmarkingsuite.imageprocessing.pipeline.LocalEffectTask;
 
-public class BenchProtocolImpl implements IBenchProtocol {
+public class BenchProtocolImpl implements IBenchProtocol, Runnable {
 
 	FrameProcessor frameProcessor;
 	private static final int DEFAULT_BUFFER_SIZE = 64 * 1024;
@@ -49,51 +49,58 @@ public class BenchProtocolImpl implements IBenchProtocol {
 
 	@Override
 	public Void addGrayscaleEffect() throws AvroRemoteException {
-		frameProcessor.addEffect(new LocalEffectTask(new GrayscaleEffect()));
-		return null;
+		          
+       	frameProcessor.addEffect(new LocalEffectTask(new GrayscaleEffect())); 
+        return null;
+
 	}
 
 	@Override
 	public Void addIdentityEffect() throws AvroRemoteException {
-		frameProcessor.addEffect(new LocalEffectTask(new IdentityEffect()));
-		return null;
+
+		frameProcessor.addEffect(new LocalEffectTask(new IdentityEffect())); 
+        return null;
 	}
 
 	@Override
 	public Void addCartoonEffect() throws AvroRemoteException {
-		frameProcessor.addEffect(new LocalEffectTask(new CartoonEffect()));
-		return null;
+      	frameProcessor.addEffect(new LocalEffectTask(new CartoonEffect())); 
+        return null;
 	}
 
 	@Override
 	public Void addFaceDetectionEffect() throws AvroRemoteException {
-		frameProcessor.addEffect(new LocalEffectTask(new FaceDetectionEffect()));
-		return null;
+
+		frameProcessor.addEffect(new LocalEffectTask(new FaceDetectionEffect())); 
+        return null;
 	}
 
 	@Override
 	public Void addMaskEffect() throws AvroRemoteException {
-		frameProcessor.addEffect(new LocalEffectTask(new MaskEffect()));
-		return null;
+
+		frameProcessor.addEffect(new LocalEffectTask(new MaskEffect())); 
+        return null;
 	}
 
 	@Override
 	public Void addMotionDetectionEffect() throws AvroRemoteException {
-		frameProcessor.addEffect(new LocalEffectTask(new MotionDetectionEffect()));
-		return null;
+
+		frameProcessor.addEffect(new LocalEffectTask(new MotionDetectionEffect())); 
+        return null;
 	}
 
 	@Override
 	public Void addCheckerBoardDetectionEffect() throws AvroRemoteException {
-		frameProcessor.addEffect(new LocalEffectTask(new CheckerBoardDetectionEffect()));
-		return null;
+
+    	frameProcessor.addEffect(new LocalEffectTask(new CheckerBoardDetectionEffect())); 
+       return null;
 	}
 
 	@Override
 	public Void clearEffects() throws AvroRemoteException {
-		System.out.println("Clearling all effects");
-		frameProcessor.clearEffects();
-		return null;
+		System.out.println("Clearing all effects");
+		frameProcessor.clearEffects(); 
+         return null;
 	}
 
 	@Override
@@ -196,5 +203,15 @@ public class BenchProtocolImpl implements IBenchProtocol {
 		}
 		outputBuffer.reset();
 		return outputBuffer;
+	}
+
+	public Void TCPCloudClient() throws AvroRemoteException {
+		
+       return null;
+	}
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 }

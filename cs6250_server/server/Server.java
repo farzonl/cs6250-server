@@ -1,25 +1,22 @@
 package server;
-//import SendFileServer.SendFile;
 
 import java.io.IOException;
 import java.net.*;
 
-import org.apache.avro.ipc.DatagramServer;
 import org.apache.avro.ipc.NettyServer;
 import org.apache.avro.ipc.specific.SpecificResponder;
 
+import cs6250.benchmarkingsuite.imageprocessing.server.IBenchProtocol;
+
 public class Server {
 	private static NettyServer server;
-	//private static DatagramServer server;
 	final static int port = 20001;
 	
-	public void InitServer() throws Exception {
+	public void InitServer() throws UnknownHostException {
 		InetSocketAddress socketAddr = new InetSocketAddress(port);
 		while (true) {
 			server = new NettyServer(new SpecificResponder(IBenchProtocol.class,
 					new BenchProtocolImpl()), socketAddr);
-			//server = new DatagramServer(new SpecificResponder(IBenchProtocol.class,
-				//	new BenchProtocolImpl()), socketAddr);
 			
 			try {
 				server.getPort();
@@ -30,17 +27,24 @@ public class Server {
 			break;
 		}
 		
-		System.out.println("Server is ready to accept connections");		
+		System.err.println("Server is ready to accept connections");		
 	}
 	
-	public void StartServer() throws Exception {
+	public void StartServer() {
 		server.start();
-		server.join();
 	}
 	
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		System.loadLibrary("opencv_java330");
 		System.out.println("Cloud Server");
+		
+		UDPServer server = new UDPServer();
+		try {
+			server.InitServer();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		server.StartServer();
 		
 		Server myServer = new Server();
 		try {
@@ -48,7 +52,8 @@ public class Server {
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
-
+		
+		myServer.StartServer();
 	}
 
 }
