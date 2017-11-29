@@ -2,13 +2,13 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="cs6250/app/src/androidTest/java"/>
-	<classpathentry kind="src" path="cs6250/app/src/main/java"/>
+	<classpathentry excluding="cs6250/benahcmarking/image/processing/TRansport_Pro/|cs6250/benahcmarking/image/processing/UDPNettyServer.java" kind="src" path="cs6250/app/src/main/java"/>
 	<classpathentry kind="src" path="cs6250/app/src/test/java"/>
 	<classpathentry kind="src" path="cs6250/openCVLibrary330/src/main/java"/>
 	<classpathentry excluding="server/DatagramServer.java" kind="src" path="cs6250_server"/>
 	<classpathentry kind="lib" path="cs6250/gradle/wrapper/gradle-wrapper.jar"/>
 	<classpathentry kind="lib" path="libs/avro-1.8.2.jar"/>
-	<classpathentry kind="lib" path="libs/netty-3.10.6.Final/jar/netty-3.10.6.Final.jar"/>
+	<classpathentry kind="lib" path="libs/netty-3.10.6.Final/jar/netty-3.10.6.Final.jar" sourcepath="C:/Users/SAYLEE/.m2/repository/io/netty/netty/3.10.6.Final/netty-3.10.6.Final-sources.jar"/>
 	<classpathentry kind="lib" path="libs/slf4j-1.7.25/slf4j-simple-1.7.25.jar"/>
 	<classpathentry kind="lib" path="libs/jackson-core-asl-1.9.13.jar"/>
 	<classpathentry kind="lib" path="libs/jackson-mapper-asl-1.9.13.jar"/>
@@ -17,9 +17,8 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="cs6250-server/libs/opencv-3.3.0/release/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="libs/avro-ipc-1.8.2.jar"/>
+	<classpathentry kind="lib" path="libs/avro-ipc-1.8.2.jar" sourcepath="C:/Users/Admin/Desktop/SocketServer"/>
 	<classpathentry kind="lib" path="libs/slf4j-1.7.25/slf4j-api-1.7.25.jar"/>
 	<classpathentry kind="lib" path="libs/commons-compress-1.15.jar"/>
-
 	<classpathentry kind="output" path="bin"/>
 </classpath>
