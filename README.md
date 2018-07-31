@@ -1,4 +1,7 @@
 # cs6250-server
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/78aaf29c243e4b6d8dc3e4eba46ddff7)](https://app.codacy.com/app/farzonl/cs6250-server?utm_source=github.com&utm_medium=referral&utm_content=farzonl/cs6250-server&utm_campaign=badger)
+
 ## Required Tools to Build
 * JDK8
 * Android Studio
